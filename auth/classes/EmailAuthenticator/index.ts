@@ -41,12 +41,14 @@ export async function sendOtp(data: Data): Promise<Data> {
 
 export async function verifyOtp(data: Data): Promise<Data> {
 
+    // Check if the OTP is correct
     if (data.request.body.otp === data.state.private.otp) {
 
         let instanceId:string|null = null
 
         data.state.private.otp = null;
 
+        // Get the instance with the given Email
         const instanceLookupResult = await rdk.getInstance({
             classId: "User",
             lookupKey: {
@@ -59,6 +61,7 @@ export async function verifyOtp(data: Data): Promise<Data> {
             instanceId = instanceLookupResult.body.instanceId
         } else {
 
+            // Create a new instance because there is no instance with the given email
             const getInstanceResult = await rdk.getInstance({
                 classId: "User", 
                 body: {
@@ -73,6 +76,7 @@ export async function verifyOtp(data: Data): Promise<Data> {
         }
 
         if(instanceId) {
+            // Generate a new token
             const customTokenResult = await rdk.generateCustomToken({
                 identity: "User",
                 userId: instanceId,
@@ -84,17 +88,21 @@ export async function verifyOtp(data: Data): Promise<Data> {
                         customToken: customTokenResult.data.customToken
                     }
                 }
-            } 
+            } else {
+                data.response = {
+                    statusCode: 500,
+                    body: "Could not generate token"
+                }
+            }
         } else {
 
             data.response = {
                 statusCode: 500,
-                body: "Error"
+                body: "An error occured"
             }
 
         }
         
-
     } else {
         data.response = {
             statusCode: 400,
