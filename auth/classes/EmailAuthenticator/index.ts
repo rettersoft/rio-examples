@@ -2,6 +2,9 @@ import RDK, { Data, InitResponse, Response, StepResponse } from "@retter/rdk";
 
 const rdk = new RDK();
 
+import { getEmailService } from "./emailService";
+const emailService = getEmailService()
+
 export async function authorizer(data: Data): Promise<Response> {
     return { statusCode: 200 };
 }
@@ -27,8 +30,7 @@ export async function sendOtp(data: Data): Promise<Data> {
 
     data.state.private.otp = otp
 
-    // TODO: send otp to user's email address
-
+    await emailService.sendEmail(data.state.public.email, "OTP", otp)
 
     data.response = {
         statusCode: 200,
@@ -53,12 +55,8 @@ export async function verifyOtp(data: Data): Promise<Data> {
             }
         })
 
-        
-
         if ( instanceLookupResult.statusCode === 200 && instanceLookupResult.body.instanceId ) {
-            
             instanceId = instanceLookupResult.body.instanceId
-
         } else {
 
             const getInstanceResult = await rdk.getInstance({
