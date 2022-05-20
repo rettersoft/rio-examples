@@ -1,0 +1,14 @@
+init: index.init
+getState: index.getState
+getInstanceId: index.getInstanceId
+methods:
+  - method: sendOtp
+    tag: test
+    invocationType: IMMEDIATE
+    type: WRITE
+    handler: index.sendOtp
+  - method: verifyOtp
+    tag: test
+    invocationType: IMMEDIATE
+    type: WRITE
+    handler: index.verifyOtp
