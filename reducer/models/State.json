@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "required": ["counter"],
+  "properties": {
+    "counter": {
+      "type": "integer"
+    }
+  }
+}

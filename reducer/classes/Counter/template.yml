@@ -1,0 +1,17 @@
+init: index.init
+getState: index.getState
+methods:
+  
+  - method: increment
+    tag: test
+    type: WRITE
+    inputModel: CounterInput
+    invocationType: IMMEDIATE
+    handler: index.increment
+
+  - method: decrement
+    tag: test
+    type: WRITE
+    inputModel: CounterInput
+    invocationType: IMMEDIATE
+    handler: index.decrement
