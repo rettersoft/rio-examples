@@ -1,0 +1,7 @@
+init: index.init
+getState: index.getState
+methods:
+  - method: publishEvent
+    tag: test
+    type: WRITE
+    handler: index.publishEvent

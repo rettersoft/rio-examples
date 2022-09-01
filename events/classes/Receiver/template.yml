@@ -1,0 +1,16 @@
+init: index.init
+getState: index.getState
+methods:
+  - method: handleEvent
+    type: QUEUED_WRITE
+    handler: index.handleEvent
+    subscriptions:
+      - name: CUSTOM_EVENT
+        instanceId: $.instanceId
+        filters:
+          - $.someField:
+              IN: 
+                - type1
+                - type2
+            $.someNumber:
+              GT: 10
